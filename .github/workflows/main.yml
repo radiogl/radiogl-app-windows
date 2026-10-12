@@ -1,0 +1,28 @@
+name: Crear Executable de la Web
+on:
+  workflow_dispatch: # Permet prémer un botó per iniciar la creació
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Descarregar codi del repositori
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Instal·lar Nativefier
+        run: npm install -g nativefier
+
+      - name: Convertir Web a EXE amb Logotip
+        run: |
+          nativefier "https:radiogl.github.io" --name "Ràdio GL" --icon "icon.ico" --platform "windows"
+
+      - name: Pujar el resultat a GitHub
+        uses: actions/upload-artifact@v4
+        with:
+          name: Aplicacio-Windows
+          path: ./*win32-x64/
